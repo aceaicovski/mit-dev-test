@@ -3,11 +3,17 @@ import { Box, Container, Pagination, Typography } from "@mui/material";
 import { getProducts } from "services/productsService";
 import MainLayout from "components/main-layout/MainLayout";
 import ProductsList from "components/products-list/ProductsList";
+import ProductsFilters from "components/products-filters/ProductsFilters";
 import { Product } from "shared/models/products.interface";
 
 interface PaginationQueries {
   offset: number;
   limit: number;
+}
+export interface FilterQueries {
+  title: string;
+  price_min: number;
+  price_max: number;
 }
 
 const Products = () => {
@@ -23,19 +29,28 @@ const Products = () => {
   const pagesCount =
     products && products.length === 0 ? currentPage : currentPage + 1;
 
+  const [filterQueries, setFilterQueries] = useState<FilterQueries>({
+    title: "",
+    price_min: 1,
+    price_max: 500,
+  });
+
   const getProductsList = useCallback(async () => {
     try {
-      const products = await getProducts({ ...paginationQueries });
+      const products = await getProducts({
+        ...filterQueries,
+        ...paginationQueries,
+      });
       setProducts(products);
       console.log(products);
     } catch (error) {
       console.error("Error fetching products list:", error);
     }
-  }, [currentPage]);
+  }, [currentPage, filterQueries]);
 
   useEffect(() => {
     getProductsList();
-  }, [currentPage]);
+  }, [currentPage, filterQueries]);
 
   const handleChangePage = (_: React.ChangeEvent<unknown>, value: number) => {
     const { offset, limit } = paginationQueries;
@@ -80,6 +95,8 @@ const Products = () => {
             all your fashion needs.
           </Typography>
         </Box>
+
+        <ProductsFilters setFilters={setFilterQueries} />
 
         <ProductsList products={products} />
 
