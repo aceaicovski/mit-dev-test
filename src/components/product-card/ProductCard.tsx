@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
+import { Box, Button, CardActionArea } from "@mui/material";
 import { Product } from "shared/models/products.interface";
 
 interface ProductCardProps {
@@ -21,14 +21,44 @@ const ProductCard = ({ product }: ProductCardProps) => {
           alt={product.title}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+            }}
+          >
             {product.title}
           </Typography>
-          {/* <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography> */}
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {product.description}
+          </Typography>
         </CardContent>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 2,
+            p: 2,
+          }}
+        >
+          <Typography variant="h5" component="div">
+            {product.price}$
+          </Typography>
+          <Button variant="contained">Add to cart</Button>
+        </Box>
       </CardActionArea>
     </Card>
   );

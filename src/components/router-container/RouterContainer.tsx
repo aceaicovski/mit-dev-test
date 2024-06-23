@@ -1,4 +1,8 @@
-import { createBrowserRouter } from "react-router-dom";
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
 
 import ProTip from "../ui/ProTip";
 import Home from "pages/Home";
@@ -7,32 +11,23 @@ import ProfilePage from "pages/ProfilePage";
 import Products from "pages/Products";
 import ProtectedRoute from "./ProtectedRoute";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/profile",
-    element: (
-      <ProtectedRoute>
-        <ProfilePage />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/products",
-    element: <Products />,
-  },
-  {
-    path: "*",
-    element: <ProTip />,
-  },
-]);
+const routes = createRoutesFromElements(
+  <>
+    <Route path="/" element={<Home />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/products" element={<Products />} />
+    <Route
+      path="/profile"
+      element={
+        <ProtectedRoute>
+          <ProfilePage />
+        </ProtectedRoute>
+      }
+    />
 
-export default router;
+    <Route path="*" element={<ProTip />} />
+  </>
+);
+
+export const router = createBrowserRouter(routes);
 

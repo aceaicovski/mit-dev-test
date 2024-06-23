@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
-import { Box, InputAdornment, Slider, TextField } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import {
+  Box,
+  InputAdornment,
+  Slider,
+  TextField,
+  Typography,
+} from "@mui/material";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
 import useDebounce from "hooks/useDebounce";
 import { FilterQueries } from "pages/Products";
@@ -14,6 +20,8 @@ const priceRangeString = (value: number) => {
 const minDistance = 15;
 
 const ProductsFilters = ({ setFilters }: ProductsFiltersProps) => {
+  const isFirstRenderSearch = useRef(true);
+  const isFirstRenderRange = useRef(true);
   const [priceRange, setPriceRange] = useState<number[]>([0, 500]);
   const [searchValue, setSearchValue] = useState<string>("");
   const debouncedPriceRange = useDebounce(priceRange, 800);
@@ -50,13 +58,27 @@ const ProductsFilters = ({ setFilters }: ProductsFiltersProps) => {
   };
 
   useEffect(() => {
+    if (isFirstRenderRange.current) {
+      isFirstRenderRange.current = false;
+      return;
+    }
+
     const [minValue, maxValue] = debouncedPriceRange;
+    console.log("Range effect triggered");
+
     setFilters((prev: FilterQueries) => {
       return { ...prev, price_min: minValue, price_max: maxValue };
     });
   }, [debouncedPriceRange, setFilters]);
 
   useEffect(() => {
+    if (isFirstRenderSearch.current) {
+      isFirstRenderSearch.current = false;
+      return;
+    }
+
+    console.log("Search effect triggered!");
+
     setFilters((prev: FilterQueries) => {
       return { ...prev, title: debouncedSearchValue };
     });
@@ -68,28 +90,43 @@ const ProductsFilters = ({ setFilters }: ProductsFiltersProps) => {
         m: 1,
         display: "flex",
         width: "100%",
-        flexDirection: "row",
+        flexDirection: { xs: "column", sm: "row" },
         alignItems: "center",
         justifyContent: "space-between",
+        gap: 3,
       }}
     >
-      <Slider
-        min={0}
-        max={500}
-        getAriaLabel={() => "Minimum distance"}
-        value={priceRange}
-        onChange={handleChangePriceRange}
-        valueLabelDisplay="auto"
-        getAriaValueText={priceRangeString}
-        disableSwap
+      <Box
         sx={{
-          width: "40ch",
-          px: 1,
+          maxWidth: { xs: "100%", sm: "40ch" },
+          width: "100%",
+          display: "flex",
+          gap: 2,
+          alignItems: "center",
         }}
-      />
+      >
+        <Typography id="price-range">Price range</Typography>
+        <Slider
+          min={0}
+          max={500}
+          aria-labelledby="price-range"
+          getAriaLabel={() => "Price Range"}
+          value={priceRange}
+          onChange={handleChangePriceRange}
+          valueLabelDisplay="auto"
+          getAriaValueText={priceRangeString}
+          disableSwap
+          sx={{
+            width: "30ch",
+            px: 1,
+          }}
+        />
+      </Box>
+
       <TextField
         id="outlined-search"
         label="Search field"
+        margin="normal"
         type="search"
         InputProps={{
           startAdornment: (
@@ -100,6 +137,9 @@ const ProductsFilters = ({ setFilters }: ProductsFiltersProps) => {
         }}
         value={searchValue}
         onChange={handleSearchFieldChange}
+        sx={{
+          width: { xs: "100%", sm: "auto" },
+        }}
       />
     </Box>
   );

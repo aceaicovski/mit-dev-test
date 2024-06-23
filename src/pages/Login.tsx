@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useForm,
@@ -6,23 +6,17 @@ import {
   SubmitHandler,
   DefaultValues,
 } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "contexts/AuthContext";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { useAuth } from "contexts/AuthContext";
 import MainLayout from "components/main-layout/MainLayout";
 import Container from "@mui/material/Container";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-export type LoginFormSchema = {
-  email: string;
-  password: string;
-};
 
 const LoginFormSchema = z.object({
   email: z
@@ -40,7 +34,7 @@ const LoginFormSchema = z.object({
 
 type LoginFormSchemaType = z.infer<typeof LoginFormSchema>;
 
-const defaultValues: DefaultValues<LoginFormSchema> = {
+const defaultValues: DefaultValues<LoginFormSchemaType> = {
   email: "",
   password: "",
 };
@@ -75,7 +69,7 @@ const Login = () => {
         component="main"
         maxWidth="xs"
         sx={{
-          pt: { xs: 4, sm: 12 },
+          pt: { xs: 10, sm: 12 },
           pb: { xs: 8, sm: 16 },
           flexGrow: 1,
           height: "100vh",

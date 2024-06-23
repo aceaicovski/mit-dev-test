@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Container, Pagination, Typography } from "@mui/material";
 import { getProducts } from "services/productsService";
 import MainLayout from "components/main-layout/MainLayout";
@@ -35,22 +35,21 @@ const Products = () => {
     price_max: 500,
   });
 
-  const getProductsList = useCallback(async () => {
-    try {
-      const products = await getProducts({
-        ...filterQueries,
-        ...paginationQueries,
-      });
-      setProducts(products);
-      console.log(products);
-    } catch (error) {
-      console.error("Error fetching products list:", error);
-    }
-  }, [currentPage, filterQueries]);
-
   useEffect(() => {
+    const getProductsList = async () => {
+      try {
+        const products = await getProducts({
+          ...filterQueries,
+          ...paginationQueries,
+        });
+        setProducts(products);
+      } catch (error) {
+        console.error("Error fetching products list:", error);
+      }
+    };
     getProductsList();
-  }, [currentPage, filterQueries]);
+    console.log("Products page effect!!!!!");
+  }, [currentPage, filterQueries, paginationQueries]);
 
   const handleChangePage = (_: React.ChangeEvent<unknown>, value: number) => {
     const { offset, limit } = paginationQueries;
@@ -71,7 +70,7 @@ const Products = () => {
       <Container
         id="products"
         sx={{
-          pt: { xs: 4, sm: 12 },
+          pt: { xs: 10, sm: 12 },
           pb: { xs: 8, sm: 16 },
           position: "relative",
           display: "flex",
@@ -86,7 +85,7 @@ const Products = () => {
             textAlign: { sm: "left", md: "center" },
           }}
         >
-          <Typography component="h2" variant="h4" color="text.primary">
+          <Typography component="h2" variant="h3" color="text.primary">
             Products
           </Typography>
           <Typography variant="body1" color="text.secondary">
@@ -99,7 +98,8 @@ const Products = () => {
         <ProductsFilters setFilters={setFilterQueries} />
 
         <ProductsList products={products} />
-
+        {/* MUI Pagination requires total number of pages and since we don't have it from API
+          I just set it to currentPage + 1 and it dynamically updates till the products list ends  */}
         <Pagination
           variant="outlined"
           color="primary"

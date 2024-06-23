@@ -12,7 +12,6 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { Link } from "@mui/material";
 import { useAuth } from "contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -46,6 +45,7 @@ const NavBar = () => {
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -67,7 +67,7 @@ const NavBar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            onClick={() => navigate("/")}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -112,9 +112,12 @@ const NavBar = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page.label} onClick={handleCloseNavMenu}>
-                  <Link href={page.path} paragraph underline="none">
-                    <Typography textAlign="center">{page.label}</Typography>
-                  </Link>
+                  <Typography
+                    onClick={() => navigate(page.path)}
+                    textAlign="center"
+                  >
+                    {page.label}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -124,7 +127,7 @@ const NavBar = () => {
             variant="h5"
             noWrap
             component="a"
-            href="/"
+            onClick={() => navigate("/")}
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -143,8 +146,11 @@ const NavBar = () => {
               <Button
                 key={page.label}
                 component="a"
-                href={page.path}
-                onClick={handleCloseNavMenu}
+                onClick={() => {
+                  setAnchorElNav(null);
+                  navigate(page.path);
+                }}
+                // onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page.label}
@@ -189,9 +195,15 @@ const NavBar = () => {
             </Box>
           ) : (
             <Button
-              href="/login"
+              onClick={() => navigate("/login")}
               variant="outlined"
-              sx={{ backgroundColor: "#fff" }}
+              sx={{
+                backgroundColor: "#fff",
+                "&:hover": {
+                  backgroundColor: "primary.light", // Change background color on hover
+                  // opacity: "70%", // Change text color on hover
+                },
+              }}
             >
               Login
             </Button>

@@ -1,5 +1,3 @@
-import { UpdateUserPayload, UserProfile } from "./models/user.interface";
-
 export function getChangedValues<T extends Record<string, any>>(
   original: T,
   updated: T

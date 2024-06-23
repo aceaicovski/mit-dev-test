@@ -1,25 +1,17 @@
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UpdateUserPayload, UserProfile } from "shared/models/user.interface";
+import { getChangedValues } from "shared/utils";
 import {
   Box,
   Button,
   Card,
   FormControl,
-  Grid,
   MenuItem,
   TextField,
-  styled,
 } from "@mui/material";
 import { useAuth } from "contexts/AuthContext";
-import { useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { UpdateUserPayload, UserProfile } from "shared/models/user.interface";
-import { getChangedValues } from "shared/utils";
-import { z } from "zod";
-
-const FormGrid = styled(Grid)(() => ({
-  display: "flex",
-  flexDirection: "column",
-}));
 
 const roleSelectValues = [
   { value: "customer", label: "Customer" },
@@ -55,14 +47,10 @@ type EditProfileFormSchemaType = z.infer<typeof EditProfileFormSchema>;
 const EditProfile = () => {
   const { user, updateUser, deleteUser } = useAuth();
   const { id, name, email, password, role } = user as UserProfile;
-  const [editProfilePayload, setEditProfilePayload] =
-    useState<UpdateUserPayload>({ name, email, password, role });
 
   const {
     handleSubmit,
-    register,
     control,
-    setValue,
     formState: { errors },
   } = useForm<EditProfileFormSchemaType>({
     resolver: zodResolver(EditProfileFormSchema),
@@ -161,20 +149,27 @@ const EditProfile = () => {
           control={control}
         />
       </FormControl>
-      <Box sx={{ display: "flex", justifyContent: "space-between", gap: 6 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: { xs: "flex-start", sm: "space-between" },
+          alignItems: "flex-start",
+          gap: { xs: 2, sm: 4 },
+          my: 2,
+        }}
+      >
         <Button
           type="submit"
-          fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+          sx={{ width: { xs: "100%", sm: "auto" } }}
         >
           Edit
         </Button>
         <Button
-          fullWidth
           variant="contained"
           color="warning"
-          sx={{ mt: 3, mb: 2 }}
+          sx={{ width: { xs: "100%", sm: "auto" } }}
           onClick={handleDeleteUser}
         >
           Delete Account
