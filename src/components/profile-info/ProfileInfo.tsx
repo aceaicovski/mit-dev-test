@@ -55,10 +55,11 @@ const ProfileInfo = () => {
                       sx={{
                         display: "flex",
                         flexWrap: "wrap",
+                        gap: 1,
                       }}
                     >
-                      <strong>{key}:</strong>{" "}
-                      <span> {user[key as keyof UserProfile]}</span>
+                      <strong>{value}:</strong>{" "}
+                      <span>{user[key as keyof UserProfile]}</span>
                     </Typography>
                   </div>
                 ))}
