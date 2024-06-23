@@ -97,16 +97,31 @@ const Products = () => {
 
         <ProductsFilters setFilters={setFilterQueries} />
 
-        <ProductsList products={products} />
-        {/* MUI Pagination requires total number of pages and since we don't have it from API
+        {products.length > 0 ? (
+          <>
+            <ProductsList products={products} />
+            {/* MUI Pagination requires total number of pages and since we don't have it from API
           I just set it to currentPage + 1 and it dynamically updates till the products list ends  */}
-        <Pagination
-          variant="outlined"
-          color="primary"
-          count={pagesCount}
-          page={currentPage}
-          onChange={handleChangePage}
-        />
+            <Pagination
+              variant="outlined"
+              color="primary"
+              count={pagesCount}
+              page={currentPage}
+              onChange={handleChangePage}
+            />
+          </>
+        ) : (
+          <Box
+            sx={{
+              width: { sm: "100%", md: "60%" },
+              textAlign: { sm: "left", md: "center" },
+            }}
+          >
+            <Typography variant="h5" color="text.primary">
+              No products satisfy the criteria
+            </Typography>
+          </Box>
+        )}
       </Container>
     </MainLayout>
   );

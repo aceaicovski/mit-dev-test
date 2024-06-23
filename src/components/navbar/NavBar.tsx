@@ -150,7 +150,6 @@ const NavBar = () => {
                   setAnchorElNav(null);
                   navigate(page.path);
                 }}
-                // onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page.label}
@@ -200,8 +199,7 @@ const NavBar = () => {
               sx={{
                 backgroundColor: "#fff",
                 "&:hover": {
-                  backgroundColor: "primary.light", // Change background color on hover
-                  // opacity: "70%", // Change text color on hover
+                  backgroundColor: "primary.light",
                 },
               }}
             >

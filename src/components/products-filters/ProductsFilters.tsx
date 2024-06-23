@@ -25,7 +25,7 @@ const ProductsFilters = ({ setFilters }: ProductsFiltersProps) => {
   const [priceRange, setPriceRange] = useState<number[]>([0, 500]);
   const [searchValue, setSearchValue] = useState<string>("");
   const debouncedPriceRange = useDebounce(priceRange, 800);
-  const debouncedSearchValue = useDebounce(searchValue, 1000);
+  const debouncedSearchValue = useDebounce(searchValue, 900);
 
   const handleChangePriceRange = (
     _: Event,
