@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  useForm,
+  Controller,
+  SubmitHandler,
+  DefaultValues,
+} from "react-hook-form";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -10,15 +16,50 @@ import Typography from "@mui/material/Typography";
 import { useAuth } from "contexts/AuthContext";
 import MainLayout from "components/main-layout/MainLayout";
 import Container from "@mui/material/Container";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function Login() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+export type LoginFormSchema = {
+  email: string;
+  password: string;
+};
+
+const LoginFormSchema = z.object({
+  email: z
+    .string({
+      required_error: "Enter a valid email",
+    })
+    .email("This is not a valid email")
+    .min(2, { message: "This field is required" }),
+  password: z
+    .string({
+      required_error: "This field is required",
+    })
+    .min(1, { message: "This field is required" }),
+});
+
+type LoginFormSchemaType = z.infer<typeof LoginFormSchema>;
+
+const defaultValues: DefaultValues<LoginFormSchema> = {
+  email: "",
+  password: "",
+};
+
+const Login = () => {
   const { login, user, error } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<LoginFormSchemaType>({
+    resolver: zodResolver(LoginFormSchema),
+    defaultValues,
+  });
+
+  const onSubmit: SubmitHandler<LoginFormSchemaType> = (data) => {
+    const { email, password } = data;
     login(email, password);
   };
 
@@ -60,31 +101,47 @@ export default function Login() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             noValidate
             sx={{ mt: 1 }}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
+            <Controller
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  error={Boolean(errors.email)}
+                  helperText={errors.email?.message}
+                />
+              )}
               name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={(e) => setEmail(e.target.value)}
+              control={control}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
+            <Controller
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  error={Boolean(errors.password)}
+                  helperText={errors.password?.message}
+                />
+              )}
               name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={(e) => setPassword(e.target.value)}
+              control={control}
             />
 
             <Button
@@ -101,5 +158,7 @@ export default function Login() {
       </Container>
     </MainLayout>
   );
-}
+};
+
+export default Login;
 

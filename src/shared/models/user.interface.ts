@@ -3,7 +3,7 @@ export interface UserProfile {
   email: string;
   password: string;
   name: string;
-  role: string;
+  role: "customer" | "admin";
   avatar: string;
   creationAt: string;
   updatedAt: string;
@@ -12,7 +12,7 @@ export interface UpdateUserPayload {
   email?: string;
   password?: string;
   name?: string;
-  role?: string;
+  role?: "customer" | "admin";
   avatar?: string;
 }
 

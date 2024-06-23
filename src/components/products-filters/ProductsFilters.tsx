@@ -3,7 +3,6 @@ import { Box, InputAdornment, Slider, TextField } from "@mui/material";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
 import useDebounce from "hooks/useDebounce";
 import { FilterQueries } from "pages/Products";
-import { SearchOff } from "@mui/icons-material";
 
 interface ProductsFiltersProps {
   setFilters: React.Dispatch<React.SetStateAction<FilterQueries>>;
@@ -17,8 +16,8 @@ const minDistance = 15;
 const ProductsFilters = ({ setFilters }: ProductsFiltersProps) => {
   const [priceRange, setPriceRange] = useState<number[]>([0, 500]);
   const [searchValue, setSearchValue] = useState<string>("");
-  const debouncedPriceRange = useDebounce(priceRange, 500);
-  const debouncedSearchValue = useDebounce(searchValue, 600);
+  const debouncedPriceRange = useDebounce(priceRange, 800);
+  const debouncedSearchValue = useDebounce(searchValue, 1000);
 
   const handleChangePriceRange = (
     _: Event,
@@ -55,13 +54,13 @@ const ProductsFilters = ({ setFilters }: ProductsFiltersProps) => {
     setFilters((prev: FilterQueries) => {
       return { ...prev, price_min: minValue, price_max: maxValue };
     });
-  }, [debouncedPriceRange]);
+  }, [debouncedPriceRange, setFilters]);
 
   useEffect(() => {
     setFilters((prev: FilterQueries) => {
       return { ...prev, title: debouncedSearchValue };
     });
-  }, [debouncedSearchValue]);
+  }, [debouncedSearchValue, setFilters]);
 
   return (
     <Box

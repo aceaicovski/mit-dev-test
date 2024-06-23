@@ -1,23 +1,56 @@
-import { Box, Button, Card, Grid, TextField, styled } from "@mui/material";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Box,
+  Button,
+  Card,
+  FormControl,
+  Grid,
+  MenuItem,
+  TextField,
+  styled,
+} from "@mui/material";
 import { useAuth } from "contexts/AuthContext";
 import { useState } from "react";
-import { UpdateUserPayload } from "shared/models/user.interface";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { UpdateUserPayload, UserProfile } from "shared/models/user.interface";
+import { getChangedValues } from "shared/utils";
+import { z } from "zod";
 
 const FormGrid = styled(Grid)(() => ({
   display: "flex",
   flexDirection: "column",
 }));
 
-export interface UserProfile {
-  id: number;
-  email: string;
-  password: string;
-  name: string;
-  role: string;
-  avatar: string;
-  creationAt: string;
-  updatedAt: string;
-}
+const roleSelectValues = [
+  { value: "customer", label: "Customer" },
+  { value: "admin", label: "Admin" },
+];
+
+const EditProfileFormSchema = z.object({
+  name: z
+    .string({
+      required_error: "This field is required",
+    })
+    .min(1, { message: "Please provide a valid name" }),
+  email: z
+    .string({
+      required_error: "Enter a valid email",
+    })
+    .email("This is not a valid email")
+    .min(2, { message: "This field is required" }),
+  password: z
+    .string({
+      required_error: "This field is required",
+    })
+    .min(8, { message: "Password should be at least 8 characters" }),
+  role: z
+    .string({
+      required_error: "This field is required",
+    })
+    .min(1, { message: "Please choose a role" }),
+});
+
+type EditProfileFormSchemaType = z.infer<typeof EditProfileFormSchema>;
 
 const EditProfile = () => {
   const { user, updateUser, deleteUser } = useAuth();
@@ -25,9 +58,26 @@ const EditProfile = () => {
   const [editProfilePayload, setEditProfilePayload] =
     useState<UpdateUserPayload>({ name, email, password, role });
 
-  const handleEditUser = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    updateUser(id, editProfilePayload);
+  const {
+    handleSubmit,
+    register,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm<EditProfileFormSchemaType>({
+    resolver: zodResolver(EditProfileFormSchema),
+    defaultValues: {
+      name,
+      email,
+      password,
+      role,
+    },
+  });
+
+  const onSubmit: SubmitHandler<EditProfileFormSchemaType> = (data) => {
+    const payload = getChangedValues(user as UserProfile, data);
+
+    updateUser(id, payload as UpdateUserPayload);
   };
 
   const handleDeleteUser = () => {
@@ -37,71 +87,80 @@ const EditProfile = () => {
   return (
     <Card
       component="form"
-      onSubmit={handleEditUser}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         display: "flex",
         flexDirection: "column",
         p: 4,
       }}
     >
-      <TextField
-        margin="normal"
-        required
-        fullWidth
-        id="name"
-        label="Name"
+      <Controller
+        render={({ field }) => (
+          <TextField
+            {...field}
+            margin="normal"
+            fullWidth
+            id="name"
+            label="Name"
+            name="name"
+            autoComplete="name"
+            autoFocus
+            error={Boolean(errors.name)}
+            helperText={errors.name?.message}
+          />
+        )}
         name="name"
-        autoComplete="name"
-        autoFocus
-        value={editProfilePayload?.name}
-        onChange={(e) =>
-          setEditProfilePayload((prev) => ({ ...prev, name: e.target.value }))
-        }
+        control={control}
       />
-      <TextField
-        margin="normal"
-        required
-        fullWidth
-        id="email"
-        label="Email Address"
+      <Controller
+        render={({ field }) => (
+          <TextField
+            {...field}
+            margin="normal"
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            error={Boolean(errors.email)}
+            helperText={errors.email?.message}
+          />
+        )}
         name="email"
-        autoComplete="email"
-        value={editProfilePayload?.email}
-        onChange={(e) =>
-          setEditProfilePayload((prev) => ({ ...prev, email: e.target.value }))
-        }
+        control={control}
       />
-      <TextField
-        margin="normal"
-        required
-        fullWidth
+      <Controller
+        render={({ field }) => (
+          <TextField
+            {...field}
+            margin="normal"
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            error={Boolean(errors.password)}
+            helperText={errors.password?.message}
+          />
+        )}
         name="password"
-        label="Password"
-        type="password"
-        id="password"
-        autoComplete="current-password"
-        value={editProfilePayload?.password}
-        onChange={(e) =>
-          setEditProfilePayload((prev) => ({
-            ...prev,
-            password: e.target.value,
-          }))
-        }
+        control={control}
       />
-      <TextField
-        margin="normal"
-        required
-        fullWidth
-        name="role"
-        label="Role"
-        type="text"
-        id="role"
-        autoComplete="role"
-        value={editProfilePayload?.role}
-        onChange={(e) =>
-          setEditProfilePayload((prev) => ({ ...prev, role: e.target.value }))
-        }
-      />
+      <FormControl fullWidth error={Boolean(errors.role)}>
+        <Controller
+          render={({ field }) => (
+            <TextField {...field} select id="role">
+              {roleSelectValues.map((item) => (
+                <MenuItem value={item.value}>{item.label}</MenuItem>
+              ))}
+            </TextField>
+          )}
+          name="role"
+          control={control}
+        />
+      </FormControl>
       <Box sx={{ display: "flex", justifyContent: "space-between", gap: 6 }}>
         <Button
           type="submit"
@@ -121,8 +180,6 @@ const EditProfile = () => {
           Delete Account
         </Button>
       </Box>
-
-      {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
     </Card>
   );
 };

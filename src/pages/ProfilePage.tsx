@@ -7,16 +7,6 @@ import EditProfile from "components/edit-profile/EditProfile";
 import MainLayout from "components/main-layout/MainLayout";
 import ProfileInfo from "components/profile-info/ProfileInfo";
 
-export interface UserProfile {
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-  avatar: string;
-  creationAt: string;
-  updatedAt: string;
-}
-
 const ProfilePage = () => {
   const [value, setValue] = useState(0);
 
