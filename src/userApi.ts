@@ -1,9 +1,8 @@
-// src/api.js
 import axios from "axios";
 import { API_BASE_URL } from "config";
 
 const api = axios.create({
-  baseURL: API_BASE_URL, // API base URL
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
     "X-Frame-Options": "SAMEORIGIN",
@@ -12,7 +11,6 @@ const api = axios.create({
   },
 });
 
-// Add an interceptor to attach the token to each request
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("access_token");

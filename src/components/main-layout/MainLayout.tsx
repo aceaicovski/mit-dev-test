@@ -1,15 +1,21 @@
-import { NavBar } from "components/navbar/NavBar";
+import { Box, styled } from "@mui/material";
+import NavBar from "components/navbar/NavBar";
+import { PropsWithChildren } from "react";
 
-interface IMainLayoutProps {
-  children: React.ReactNode;
-}
-const MainLayout = ({ children }: IMainLayoutProps): JSX.Element => {
+const StyledBox = styled(Box)(() => ({
+  height: "100vh",
+  display: "flex",
+  flexDirection: "column",
+}));
+
+const MainLayout = ({ children }: PropsWithChildren) => {
   return (
-    <>
+    <StyledBox>
       <NavBar />
       {children}
-    </>
+    </StyledBox>
   );
 };
 
 export default MainLayout;
+

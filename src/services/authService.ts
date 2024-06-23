@@ -1,4 +1,3 @@
-// src/services/authService.ts
 import { getProfilePath } from "shared/api-routes";
 
 import { UserProfile } from "shared/models/user.interface";
@@ -23,7 +22,6 @@ export const getJWTToken = async (
   return response.data;
 };
 
-// add getUserProfile api call
 export const getUserProfile = async (): Promise<UserProfile> => {
   const response = await api.get<UserProfile>(getProfilePath);
 
