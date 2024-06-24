@@ -48,7 +48,6 @@ const Products = () => {
       }
     };
     getProductsList();
-    console.log("Products page effect!!!!!");
   }, [currentPage, filterQueries, paginationQueries]);
 
   const handleChangePage = (_: React.ChangeEvent<unknown>, value: number) => {

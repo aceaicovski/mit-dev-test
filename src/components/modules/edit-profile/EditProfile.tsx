@@ -141,7 +141,9 @@ const EditProfile = () => {
           render={({ field }) => (
             <TextField {...field} select id="role">
               {roleSelectValues.map((item) => (
-                <MenuItem value={item.value}>{item.label}</MenuItem>
+                <MenuItem key={item.value} value={item.value}>
+                  {item.label}
+                </MenuItem>
               ))}
             </TextField>
           )}
