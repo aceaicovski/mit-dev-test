@@ -4,12 +4,12 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 
-import ProTip from "../ui/ProTip";
 import Home from "pages/Home";
 import Login from "pages/Login";
 import ProfilePage from "pages/ProfilePage";
 import Products from "pages/Products";
 import ProtectedRoute from "./ProtectedRoute";
+import NotFound from "../../pages/NotFound";
 
 const routes = createRoutesFromElements(
   <>
@@ -25,7 +25,7 @@ const routes = createRoutesFromElements(
       }
     />
 
-    <Route path="*" element={<ProTip />} />
+    <Route path="*" element={<NotFound />} />
   </>
 );
 
