@@ -1,4 +1,5 @@
-import * as React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,9 +12,8 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import IronTwoToneIcon from "@mui/icons-material/IronTwoTone";
 import { useAuth } from "contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const pages = [
   { label: "Products", path: "/products" },
@@ -25,12 +25,8 @@ const NavBar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const settings = [
     {
@@ -62,7 +58,10 @@ const NavBar = () => {
     <AppBar position="fixed">
       <Container>
         <Toolbar disableGutters sx={{ cursor: "pointer" }}>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <IronTwoToneIcon
+            fontSize="large"
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -78,7 +77,7 @@ const NavBar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            CLOTHYFY
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -122,7 +121,10 @@ const NavBar = () => {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <IronTwoToneIcon
+            fontSize="large"
+            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+          />
           <Typography
             variant="h5"
             noWrap
@@ -140,7 +142,7 @@ const NavBar = () => {
               cursor: "pointer",
             }}
           >
-            LOGO
+            CLOTHYFY
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (

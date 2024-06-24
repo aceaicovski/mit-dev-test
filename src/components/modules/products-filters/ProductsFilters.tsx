@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import {
   Box,
+  Button,
   InputAdornment,
   Slider,
   TextField,
@@ -20,8 +21,6 @@ const priceRangeString = (value: number) => {
 const minDistance = 15;
 
 const ProductsFilters = ({ setFilters }: ProductsFiltersProps) => {
-  const isFirstRenderSearch = useRef(true);
-  const isFirstRenderRange = useRef(true);
   const [priceRange, setPriceRange] = useState<number[]>([0, 500]);
   const [searchValue, setSearchValue] = useState<string>("");
   const debouncedPriceRange = useDebounce(priceRange, 800);
@@ -57,32 +56,18 @@ const ProductsFilters = ({ setFilters }: ProductsFiltersProps) => {
     setSearchValue(event.target.value);
   };
 
-  useEffect(() => {
-    if (isFirstRenderRange.current) {
-      isFirstRenderRange.current = false;
-      return;
-    }
-
+  const handleSetFilters = () => {
     const [minValue, maxValue] = debouncedPriceRange;
-    console.log("Range effect triggered");
 
     setFilters((prev: FilterQueries) => {
-      return { ...prev, price_min: minValue, price_max: maxValue };
+      return {
+        ...prev,
+        title: debouncedSearchValue,
+        price_min: minValue,
+        price_max: maxValue,
+      };
     });
-  }, [debouncedPriceRange, setFilters]);
-
-  useEffect(() => {
-    if (isFirstRenderSearch.current) {
-      isFirstRenderSearch.current = false;
-      return;
-    }
-
-    console.log("Search effect triggered!");
-
-    setFilters((prev: FilterQueries) => {
-      return { ...prev, title: debouncedSearchValue };
-    });
-  }, [debouncedSearchValue, setFilters]);
+  };
 
   return (
     <Box
@@ -123,24 +108,43 @@ const ProductsFilters = ({ setFilters }: ProductsFiltersProps) => {
         />
       </Box>
 
-      <TextField
-        id="outlined-search"
-        label="Search field"
-        margin="normal"
-        type="search"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <ManageSearchOutlinedIcon />
-            </InputAdornment>
-          ),
-        }}
-        value={searchValue}
-        onChange={handleSearchFieldChange}
+      <Box
         sx={{
+          display: "flex",
           width: { xs: "100%", sm: "auto" },
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: "center",
+          justifyContent: "space-betweeright",
+          gap: 1,
         }}
-      />
+      >
+        <TextField
+          id="outlined-search"
+          size="small"
+          label="Search field"
+          margin="none"
+          type="search"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <ManageSearchOutlinedIcon />
+              </InputAdornment>
+            ),
+          }}
+          value={searchValue}
+          onChange={handleSearchFieldChange}
+          sx={{
+            width: { xs: "100%", sm: "auto" },
+          }}
+        />
+        <Button
+          variant="contained"
+          onClick={handleSetFilters}
+          sx={{ width: { xs: "100%", sm: "auto" } }}
+        >
+          Filter
+        </Button>
+      </Box>
     </Box>
   );
 };

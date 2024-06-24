@@ -101,8 +101,6 @@ export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     }
   }, [isAuthenticated]);
 
-  console.log(isAuthenticated, user);
-
   return (
     <AuthContext.Provider
       value={{
