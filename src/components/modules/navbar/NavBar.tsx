@@ -61,7 +61,7 @@ const NavBar = () => {
   return (
     <AppBar position="fixed">
       <Container>
-        <Toolbar disableGutters>
+        <Toolbar disableGutters sx={{ cursor: "pointer" }}>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -137,6 +137,7 @@ const NavBar = () => {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer",
             }}
           >
             LOGO

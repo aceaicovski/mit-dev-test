@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Box, Container, Pagination, Typography } from "@mui/material";
 import { getProducts } from "services/productsService";
-import MainLayout from "components/main-layout/MainLayout";
-import ProductsList from "components/products-list/ProductsList";
-import ProductsFilters from "components/products-filters/ProductsFilters";
+import MainLayout from "components/ui/main-layout/MainLayout";
+import ProductsList from "components/modules/products-list/ProductsList";
+import ProductsFilters from "components/modules/products-filters/ProductsFilters";
 import { Product } from "shared/models/products.interface";
 
 interface PaginationQueries {

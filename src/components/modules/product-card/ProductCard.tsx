@@ -1,4 +1,3 @@
-import * as React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -45,21 +44,21 @@ const ProductCard = ({ product }: ProductCardProps) => {
             {product.description}
           </Typography>
         </CardContent>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 2,
-            p: 2,
-          }}
-        >
-          <Typography variant="h5" component="div">
-            {product.price}$
-          </Typography>
-          <Button variant="contained">Add to cart</Button>
-        </Box>
       </CardActionArea>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 2,
+          p: 2,
+        }}
+      >
+        <Typography variant="h5" component="div">
+          {product.price}$
+        </Typography>
+        <Button variant="contained">Add to cart</Button>
+      </Box>
     </Card>
   );
 };

@@ -1,6 +1,6 @@
-import { Box, styled } from "@mui/material";
-import NavBar from "components/navbar/NavBar";
 import { PropsWithChildren } from "react";
+import { Box, styled } from "@mui/material";
+import NavBar from "components/modules/navbar/NavBar";
 
 const StyledBox = styled(Box)(() => ({
   height: "100vh",

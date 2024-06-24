@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import ProductCard from "components/product-card/ProductCard";
+import ProductCard from "components/modules/product-card/ProductCard";
 import { Product } from "shared/models/products.interface";
 
 interface ProductsListProps {

@@ -9,7 +9,7 @@ import Login from "pages/Login";
 import ProfilePage from "pages/ProfilePage";
 import Products from "pages/Products";
 import ProtectedRoute from "./ProtectedRoute";
-import NotFound from "../../pages/NotFound";
+import NotFound from "../../../pages/NotFound";
 
 const routes = createRoutesFromElements(
   <>

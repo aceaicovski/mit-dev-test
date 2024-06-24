@@ -1,7 +1,6 @@
 import { getProfilePath } from "shared/api-routes";
-
-import { UserProfile } from "shared/models/user.interface";
 import api from "userApi";
+import { UserProfile } from "shared/models/user.interface";
 
 interface LoginResponse {
   access_token: string;

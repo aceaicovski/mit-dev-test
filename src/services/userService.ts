@@ -1,6 +1,6 @@
+import api from "userApi";
 import { userPath } from "shared/api-routes";
 import { UpdateUserPayload, UserProfile } from "shared/models/user.interface";
-import api from "userApi";
 
 export const updateUserProfile = async (
   userId: number,

@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Tab, Tabs, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import CustomTabPanel from "components/custom-tab-panel/CustomTabPanel";
-import EditProfile from "components/edit-profile/EditProfile";
-import MainLayout from "components/main-layout/MainLayout";
-import ProfileInfo from "components/profile-info/ProfileInfo";
+import CustomTabPanel from "components/ui/custom-tab-panel/CustomTabPanel";
+import EditProfile from "components/modules/edit-profile/EditProfile";
+import MainLayout from "components/ui/main-layout/MainLayout";
+import ProfileInfo from "components/modules/profile-info/ProfileInfo";
 
 const ProfilePage = () => {
   const [value, setValue] = useState(0);

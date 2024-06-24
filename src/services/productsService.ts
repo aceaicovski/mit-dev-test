@@ -1,6 +1,6 @@
+import api from "userApi";
 import { productsPath } from "shared/api-routes";
 import { Product } from "shared/models/products.interface";
-import api from "userApi";
 
 type ProductsResponse = Product[];
 
